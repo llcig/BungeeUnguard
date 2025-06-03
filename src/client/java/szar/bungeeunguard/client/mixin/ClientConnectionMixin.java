@@ -2,6 +2,7 @@ package szar.bungeeunguard.client.mixin;
 
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.login.LoginSuccessS2CPacket;
@@ -13,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import szar.bungeeunguard.client.BungeeUnguardClient;
+
+import java.net.SocketAddress;
 
 @Mixin(ClientConnection.class)
 public class ClientConnectionMixin {
@@ -33,15 +36,15 @@ public class ClientConnectionMixin {
             String bungeeGuardToken = profile.getProperties().get("bungeeguard-token").toString();
             if (!bungeeGuardToken.contains("bungeeguard-token")) return;
 
-            // print multiple times so it easier to see
+            // print multiple times so it's easier to see
             for (int i = 0; i < 16; i++)
-                System.out.println("BungeeGuard token FOUND!!!: " + bungeeGuardToken);
+                System.out.println("BungeeGuard token FOUND for " + BungeeUnguardClient.LAST_SERVER + "!!!: " + bungeeGuardToken);
 
             BungeeUnguardClient.runWhenPlayer.add(() -> {
                 assert MinecraftClient.getInstance().player != null;
 
                 for (int i = 0; i < 16; i++)
-                    MinecraftClient.getInstance().player.sendMessage(Text.of("§aBungeeGuard token FOUND! OPEN LOGS!"), false);
+                    MinecraftClient.getInstance().player.sendMessage(Text.of("§aBungeeGuard token FOUND! (" + BungeeUnguardClient.LAST_SERVER + ") OPEN LOGS!"), false);
             });
         }
     }

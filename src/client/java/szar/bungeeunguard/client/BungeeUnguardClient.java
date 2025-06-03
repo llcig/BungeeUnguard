@@ -9,6 +9,7 @@ public class BungeeUnguardClient implements ClientModInitializer {
 
 //    public static final String MOD_ID = "bungeeunguard";
     public static final CopyOnWriteArrayList<Runnable> runWhenPlayer = new CopyOnWriteArrayList<>();
+    public static String LAST_SERVER = "";
 
     @Override
     public void onInitializeClient() {
